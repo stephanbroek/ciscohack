@@ -21,6 +21,10 @@ require.config({
 			"//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min",
 			"./assets/bootstrap.min"
 		],
+		'L' : [
+			"//cdn.leafletjs.com/leaflet-0.7.3/leaflet" 
+		],
+		
         'text': "./assets/text",
         'templates': "../templates"
 	},
