@@ -5,8 +5,9 @@ define([
     'backbone',
     'text!templates/MapTemplate.html',
     'libs/jscoord-1.1.1',
+    'libs/csonv',
     'L'
-], function ($, _, Backbone, MapTemplate, jscoord, L) {
+], function ($, _, Backbone, MapTemplate, jscoord, csv, L) {
 
     var MapView = Backbone.View.extend({
 
@@ -73,7 +74,9 @@ define([
 
 
             //for each result in the array, add a start lat and start lon field then plot it on the map
-            for (var i = 0; i < result.length; i++) {
+            
+            for (var i = 0; i < result.length -1; i++) {
+                
 
                 //Convert os grid reference to lat lon
                 var osGridStart = result[i].StartGrid;
