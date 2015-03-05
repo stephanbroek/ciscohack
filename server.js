@@ -1,9 +1,12 @@
 var http = require('http');
 var url = require('url');
 var node_static = require('node-static');
+var faye = require('faye');
 
 var file_server = new node_static.Server('./public');
 var stations = require('./stations');
+
+var socket_adapter = new faye.NodeAdapter({mount: '/stream', timeout: 60});
 
 var server = http.createServer(function(request, response) {
   var path = url.parse(request.url).pathname;
@@ -13,26 +16,20 @@ var server = http.createServer(function(request, response) {
       'Location': '/index.html'
     });
     response.end();
-  } else if (path.slice(0, 4) == '/api') {
-    // API
-    if (path == '/api/stations') {
-      response.writeHead(200, {
-        'Content-Type': 'application/json'
-      });
-      response.write(JSON.parse(stations.getList()));
-      response.end();
-    } else {
-      response.writeHead(404, {
-        'Content-Type': 'application/json'
-      });
-      response.write('{"message": "invalid API call"}');
-      response.end();
-    }
-    response.end();
   } else {
     // General static
     file_server.serve(request, response);
   }
 });
 
+socket_adapter.attach(server);
+
 server.listen(3000);
+
+var socket_client = socket_adapter.getClient();
+
+function sendData() {
+  socket_client.publish('/stations', stations.getList());
+}
+
+setInterval(sendData, 10000);
