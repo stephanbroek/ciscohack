@@ -1,8 +1,8 @@
 var http = require('http');
 var url = require('url');
-var static = require('node-static');
+var node_static = require('node-static');
 
-var file = static.Server('./public');
+var file_server = new node_static.Server('./public');
 
 var server = http.createServer(function(request, response) {
   var path = url.parse(request.url).pathname;
@@ -14,11 +14,19 @@ var server = http.createServer(function(request, response) {
     response.end();
   } else if (path.slice(0, 4) == '/api') {
     // API
+    if (false) {
 
+    } else {
+      response.writeHead(404, {
+        'Content-Type': 'application/json'
+      });
+      response.write('{"message": "invalid API call"}');
+      response.end();
+    }
     response.end();
   } else {
     // General static
-    file.serve(request, response);
+    file_server.serve(request, response);
   }
 });
 
