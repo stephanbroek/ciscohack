@@ -18,6 +18,9 @@ var server = http.createServer(function(request, response) {
     response.end();
   } else {
     // General static
+    response.writeHeader(200, {
+      'Access-Control-Allow-Origin': '*'
+    });
     file_server.serve(request, response);
   }
 });
