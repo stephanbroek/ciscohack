@@ -32,4 +32,4 @@ function sendData() {
   socket_client.publish('/stations', stations.getList());
 }
 
-setInterval(sendData, 10000);
+setInterval(sendData, 1000);
