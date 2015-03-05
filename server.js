@@ -21,6 +21,11 @@ var server = http.createServer(function(request, response) {
       'Location': '/index.html'
     });
     response.end();
+  } else if (path.slice(0,4) == '/api') {
+    if (path.slice(4) == '/stationInfo') {
+      response.write(JSON.stringify(simulation.getStationInfo()));
+      response.end();
+    }
   } else {
     // General static
     file_server.serve(request, response);
