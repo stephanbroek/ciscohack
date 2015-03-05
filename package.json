@@ -1,4 +1,8 @@
 {
-  "name": "application-name",
-  "version": "0.0.1"
+  "name": "cisco_hack",
+  "version": "0.0.1",
+  "dependencies": {
+    "mysql": "*",
+    "node-static": "*"
+  }
 }
