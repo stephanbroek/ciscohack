@@ -34,7 +34,7 @@ server.listen(3000);
 var socket_client = socket_adapter.getClient();
 
 function sendData() {
-  socket_client.publish('/stations', simulation.getStations());
+  socket_client.publish('/data', simulation.getData());
 }
 
 setInterval(sendData, 1000);

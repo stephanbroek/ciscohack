@@ -1,33 +1,33 @@
-var list ={
+var stationList = {
   'Manchester Picadilly': {
     people: 22025,
-    alert: 19000,
-    longitude: 53.47738,
-    latitude: -2.23091
+    threshold: 19000,
+    latitude: 53.47738,
+    longitude: -2.23091
   },
   'Manchester Victoria': {
     people: 5839,
-    alert: 5000,
-    longitude: 53.48748,
-    latitude: -2.2426
+    threshold: 5000,
+    latitude: 53.48748,
+    longitude: -2.2426
   },
   'Manchester Oxford Road': {
     people: 5211,
-    alert: 4800,
-    longitude: 53.47404,
-    latitude: -2.24199
+    threshold: 4800,
+    latitude: 53.47404,
+    longitude: -2.24199
   },
   'Stockport': {
     people: 3088,
-    alert: 2800,
-    longitude: 53.408619,
-    latitude: -2.162632
+    threshold: 2800,
+    latitude: 53.408619,
+    longitude: -2.162632
   },
   'Bolton': {
     people: 2771,
-    alert: 2500,
-    longitude: 53.577325,
-    latitude: -2.432879
+    threshold: 2500,
+    latitude: 53.577325,
+    longitude: -2.432879
   }
 };
 
@@ -74,21 +74,27 @@ function getProportion(t) {
 }
 
 function getPeople(name, t) {
-  return Math.floor((list[name].people) * getProportion(t));
+  return Math.floor((stationList[name].people) * getProportion(t));
 }
 
+function getStations() {
+  var result = {}, l;
+  for (l in stationList) if (stationList.hasOwnProperty(l)) {
+    result[l] = {
+      people: getPeople(l, time),
+      longitude: stationList[l].longitude,
+      latitude: stationList[l].latitude,
+      threshold: stationList[l].threshold
+    }
+  }
+  return result;
+}
 
 module.exports = {
-  getStations: function() {
-    var result = {}, l;
-    for (l in list) if (list.hasOwnProperty(l)) {
-      result[l] = {
-        people: getPeople(l, time),
-        longitude: list[l].longitude,
-        latitude: list[l].latitude
-      }
-    }
+  getData: function() {
     time = (time + 1) % 96;
-    return result;
+    return {
+      stations: getStations()
+    }
   }
 };
