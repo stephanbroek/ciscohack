@@ -100,8 +100,7 @@ module.exports = {
       result.push({
         name: l,
         longitude: carparkList[l].longitude,
-        latitude: carparkList[l].latitude,
-        threshold: carparkList[l].threshold
+        latitude: carparkList[l].latitude
       });
     }
     return result;
