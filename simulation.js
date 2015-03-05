@@ -45,7 +45,7 @@ function getProportion(t) {
 }
 
 function getPeople(name, t) {
-  return Math.floor((stationList[name].people) * proportion);
+  return Math.floor((stationList[name].capacity) * proportion);
 }
 
 function getStations() {
