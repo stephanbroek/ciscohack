@@ -18,8 +18,7 @@ var server = http.createServer(function(request, response) {
     response.end();
   } else {
     // General static
-
-    response.end();
+    file.serve(request, response);
   }
 });
 
