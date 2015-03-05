@@ -1,6 +1,17 @@
 var stationList = require('./data/stations.js');
 var carparkList = require('./data/carparks.js');
 
+var mysql = require('mysql');
+
+var mysql_con = mysql.createConnection({
+  host: 'ciscohack.cztpnl40s1bu.eu-west-1.rds.amazonaws.com',
+  user: 'sheffield',
+  password: 'thisissosecure',
+  database: 'CiscoHack'
+});
+
+mysql_con.connect(function(err) {if (err) throw err});
+
 var keys = [
   [0,.2],
   [4,.2],
@@ -74,12 +85,24 @@ function getCarParks() {
   return result;
 }
 
+function getRoadUsage(t) {
+  var zero = ('0' + (t*15)%60).slice(-2);
+  var timestamp = '2015/02/23 ' + Math.floor((t*15)/60) + ':' + zero;
+  var result;
+  var query = mysql_con.query("SELECT l.start_grid, l.end_grid, f.journeys, f.count FROM link as l LEFT JOIN (select * from full where time='" + timestamp + "') as f ON l.cosit=f.cosit;", function(err,rows,fields){
+    result = rows;
+  });
+  return result;
+}
+
 module.exports = {
   getData: function() {
     proportion = getProportion(time);
     time = (time + 1) % 96;
     return {
-      stations: getStations()
+      stations: getStations(),
+      carParks: getCarParks(),
+      roadUsage: getRoadUsage(time)
     }
   },
   getStationInfo: function() {
