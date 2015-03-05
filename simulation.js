@@ -44,16 +44,32 @@ function getProportion(t) {
   }
 }
 
-function getPeople(name, t) {
-  return Math.floor((stationList[name].capacity) * proportion);
+function getPeople(name) {
+  return Math.floor((stationList[name].people) * proportion);
+
+}
+
+function getSpaces(name) {
+  return carparkList[name].capacity - Math.floor(carparkList[name].capacity * proportion);
 }
 
 function getStations() {
   var result = [], l;
-  for (l in stationList) if (stationList.hasOwnProperty(l)) {
+  for (l in stationList) {
     result.push({
       name: l,
-      people: getPeople(l, time)
+      people: getPeople(l)
+    });
+  }
+  return result;
+}
+
+function getCarParks() {
+  var result = [], l;
+  for (l in carparkList) {
+    result.push({
+      name: l,
+      spaces: getSpaces(l)
     });
   }
   return result;
@@ -85,8 +101,7 @@ module.exports = {
       result.push({
         name: l,
         longitude: carparkList[l].longitude,
-        latitude: carparkList[l].latitude,
-        threshold: carparkList[l].threshold
+        latitude: carparkList[l].latitude
       });
     }
     return result;
