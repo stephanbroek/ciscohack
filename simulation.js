@@ -80,7 +80,8 @@ module.exports = {
     proportion = getProportion(time);
     time = (time + 1) % 96;
     return {
-      stations: getStations()
+      stations: getStations(),
+      carParks: getCarParks()
     }
   },
   getStationInfo: function() {
