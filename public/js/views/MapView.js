@@ -8,11 +8,10 @@ define([
     'L'
 ], function ($, _, Backbone, MapTemplate, jscoord, L) {
 
-    var that;
     var MapView = Backbone.View.extend({
 
         initialize: function (options) {
-            that = this;
+            
         },
         render: function () {
 
@@ -27,9 +26,9 @@ define([
                 type: "GET",
                 url: "data/linkDescriptions.csv",
                 dataType: "text",
-                success: function (data) {
-                    that.displayMap(data);
-                }
+                success: _.bind(function (data) {
+                    this.displayMap(data);
+                }, this)
             });
 
         },
