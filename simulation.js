@@ -79,7 +79,7 @@ function getPeople(name, t) {
 
 
 module.exports = {
-  getList: function() {
+  getStations: function() {
     var result = {}, l;
     for (l in list) if (list.hasOwnProperty(l)) {
       result[l] = {
