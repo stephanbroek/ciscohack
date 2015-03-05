@@ -8,7 +8,7 @@ var file_server = new node_static.Server('./public', {
 });
 var stations = require('./stations');
 
-var socket_adapter = new faye.NodeAdapter({mount: '/stream', timeout: 60});
+var socket_adapter = new faye.NodeAdapter({mount: '/faye', timeout: 60});
 
 var server = http.createServer(function(request, response) {
   var path = url.parse(request.url).pathname;
@@ -20,9 +20,6 @@ var server = http.createServer(function(request, response) {
     response.end();
   } else {
     // General static
-    response.writeHeader(200, {
-      'Access-Control-Allow-Origin': '*'
-    });
     file_server.serve(request, response);
   }
 });

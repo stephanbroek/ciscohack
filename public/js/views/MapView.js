@@ -16,10 +16,13 @@ define([
         },
         render: function () {
 
+            var client = new Faye.Client('http://localhost:3000/faye');
+
             var template = _.template(MapTemplate);
 
             this.$el.html(template);
             this.getData();
+            this.getCarParkData(client);
         },
         getData: function () {
 
@@ -102,6 +105,13 @@ define([
 
            
 
+        },
+
+        getCarParkData: function(faye_client) {
+
+            var subscription = faye_client.subscribe('/stations',function(message) {
+                console.log(message);
+            });
         }
     });
 
