@@ -171,8 +171,6 @@ define([
                 $("#boltonPercent").html(String(boltonCapacity)+"%");
 
 
-
-
             });
         }
     });

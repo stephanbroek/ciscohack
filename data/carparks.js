@@ -54,12 +54,12 @@ module.exports = {
     longitude: -2.24007567346395,
     capacity: 76
   },
-  'Gmex(lower)': {
+  'GmexLower': {
     latitude: 53.476067951511,
     longitude: -2.24679604003227,
     capacity: 719
   },
-  'Gmex(upper)': {
+  'GmexUpper': {
     latitude: 53.4747225339945,
     longitude: -2.24981674488865,
     capacity: 149
