@@ -4,9 +4,12 @@ var node_static = require('node-static');
 var faye = require('faye');
 
 var file_server = new node_static.Server('./public', {
-  'Access-Control-Allow-Origin': '*'
+  'Access-Control-Allow-Origin': '*',
+  'Cache-Control': 'no-cache, no-store, must-revalidate',
+  'Pragma': 'no-cache',
+  'Expires': '0'
 });
-var stations = require('./stations');
+var simulation = require('./simulation.js');
 
 var socket_adapter = new faye.NodeAdapter({mount: '/faye', timeout: 60});
 
@@ -31,7 +34,7 @@ server.listen(3000);
 var socket_client = socket_adapter.getClient();
 
 function sendData() {
-  socket_client.publish('/stations', stations.getList());
+  socket_client.publish('/stations', simulation.getStations());
 }
 
 setInterval(sendData, 1000);
