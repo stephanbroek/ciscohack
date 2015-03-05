@@ -37,7 +37,7 @@ function getProportion(t) {
   if (io > -1)
     return k[1][io];
   else {
-    var lower = getLower(t), higher = getHigher(t);
+    var lower = getLower(k, t), higher = getHigher(k, t);
     var lowerProportion = (t - lower[0]) / (higher[0] - lower[0]), higherProportion = 1 - lowerProportion;
     return lowerProportion * lower[1] + higherProportion * higher[1];
   }
