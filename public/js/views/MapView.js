@@ -65,7 +65,7 @@ define([
 
             //Create a map
 
-            var map = L.map(this.$('#map')[0]).setView([latlonStart.lat, latlonStart.lng], 11);
+            var map = L.map(this.$('#map')[0]).setView([latlonStart.lat, latlonStart.lng], 10);
 
             // add an OpenStreetMap tile layer
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -94,10 +94,9 @@ define([
                 //console.log(latLonObjectEnd);
 
                 //display on map
-                L.marker([latLonObjectStart.lat,latLonObjectStart.lng]).addTo(map)
-                    .bindPopup("Start")
-                L.marker([latLonObjectEnd.lat,latLonObjectEnd.lng]).addTo(map)
-                    .bindPopup("End");
+                L.circle([latLonObjectStart.lat, latLonObjectStart.lng], 5).addTo(map);
+                L.circle([latLonObjectEnd.lat, latLonObjectEnd.lng], 5).addTo(map);
+                
 
             }
 
