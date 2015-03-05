@@ -21,10 +21,11 @@ define([
             var template = _.template(MapTemplate);
 
             this.$el.html(template);
-            this.getData();
-            this.getCarParkData(client);
+            this.getCSVData();
+            this.displayStationsMap();
+            this.getData(client);
         },
-        getData: function () {
+        getCSVData: function () {
 
             $.ajax({
                 type: "GET",
@@ -107,10 +108,47 @@ define([
 
         },
 
-        getCarParkData: function(faye_client) {
+        displayStationsMap: function() {
 
-            var subscription = faye_client.subscribe('/stations',function(message) {
+            //Leaflet map
+            var map = L.map(this.$('#stationsMap')[0]).setView([53.4722454,-2.2235922], 12);
+
+            // add an OpenStreetMap tile layer
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var stationsLayer = new L.LayerGroup();
+
+            $.get('/api/stationInfo',function(stations) {
+
+                console.log(stations);
+
+                /*
+                jQuery.each(stations,function(key,station) {
+                    L.marker([station.latitude, station.longitude]).bindPopup(station.name).addTo(stationsLayer);
+                });
+                */
+
+                var overlays = {
+                    "Stations": stations
+                };
+
+                L.control.layers(overlays).addTo(map);
+
+
+            });
+            
+        },
+
+        getData: function(faye_client) {
+
+            var subscription = faye_client.subscribe('/data',function(message) {
                 console.log(message);
+
+
+
+
             });
         }
     });
