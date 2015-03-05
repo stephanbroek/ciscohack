@@ -26,6 +26,9 @@ var keys = [
 
 var k = [[0, 16, 32, 40, 48, 60, 72, 80, 96], [.2,.2, 1,.6,.8,.6, 1,.2, 2]];
 
+var k_stations = [];
+for (var s )
+
 var time = 0;
 var proportion = 0;
 
@@ -123,7 +126,8 @@ module.exports = {
       result.push({
         name: l,
         longitude: carparkList[l].longitude,
-        latitude: carparkList[l].latitude
+        latitude: carparkList[l].latitude,
+        capacity: carparkList[l].capacity
       });
     }
     return result;
