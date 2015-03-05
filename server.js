@@ -22,8 +22,12 @@ var server = http.createServer(function(request, response) {
     });
     response.end();
   } else if (path.slice(0,4) == '/api') {
-    if (path.slice(4) == '/stationInfo') {
+    var remaining = path.slice(4);
+    if (remaining == '/stationInfo') {
       response.write(JSON.stringify(simulation.getStationInfo()));
+      response.end();
+    } else if (remaining == '/carParkInfo') {
+      response.write(JSON.stringify(simulation.getCarParkInfo()));
       response.end();
     }
   } else {
