@@ -1,4 +1,5 @@
 var stationList = require('./data/stations.js');
+var carparkList = require('./data/carparks.js');
 
 var keys = [
   [0,.2],
@@ -16,6 +17,7 @@ var k0 = [0, 16, 32, 40, 48, 60, 72, 80, 96];
 var k1 = [.2,.2, 1,.6,.8,.6, 1,.2, 2];
 
 var time = 0;
+var proportion = 0;
 
 function getLower(t) {
   for (var ki=0; ki<k0.length; ki++) {
@@ -43,34 +45,49 @@ function getProportion(t) {
 }
 
 function getPeople(name, t) {
-  return Math.floor((stationList[name].people) * getProportion(t));
+  return Math.floor((stationList[name].people) * proportion);
 }
 
 function getStations() {
-  var result = {}, l;
+  var result = [], l;
   for (l in stationList) if (stationList.hasOwnProperty(l)) {
-    result[l] = {
+    result.push({
+      name: l,
       people: getPeople(l, time)
-    }
+    });
   }
   return result;
 }
 
 module.exports = {
   getData: function() {
+    proportion = getProportion(time);
     time = (time + 1) % 96;
     return {
       stations: getStations()
     }
   },
   getStationInfo: function() {
-    var result = {};
+    var result = [];
     for (var l in stationList) {
-      result[l] = {
+      result.push({
+        name: l,
         longitude: stationList[l].longitude,
         latitude: stationList[l].latitude,
         threshold: stationList[l].threshold
-      }
+      });
+    }
+    return result;
+  },
+  getCarParkInfo: function() {
+    var result = [];
+    for (var l in carparkList) {
+      result.push({
+        name: l,
+        longitude: carparkList[l].longitude,
+        latitude: carparkList[l].latitude,
+        threshold: carparkList[l].threshold
+      });
     }
     return result;
   }
