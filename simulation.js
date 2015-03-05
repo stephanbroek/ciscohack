@@ -32,7 +32,7 @@ function getHigher(k, t) {
   }
 }
 
-function getProportion(k, t) {
+function getProportion(t) {
   var io = k[0].indexOf(t);
   if (io > -1)
     return k[1][io];
