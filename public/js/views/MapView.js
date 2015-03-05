@@ -11,7 +11,7 @@ define([
     var MapView = Backbone.View.extend({
 
         initialize: function (options) {
-            
+
         },
         render: function () {
 

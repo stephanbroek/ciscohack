@@ -38,7 +38,6 @@ define([
             this.$el.append(this.homeView.$el);
             this.$el.append(this.mapView.$el);
             this.$el.append(this.footerView.$el);
-
         }
 	 });
 
