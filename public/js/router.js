@@ -5,17 +5,21 @@ define([
 	'backbone',
     'bootstrap',
 	'views/HomePage',
+	'views/ManchesterPage'
 ], function(
 	$,
 	_,
 	Backbone,
 	bootstrap,
-	HomePage) {
+	HomePage,
+	ManchesterPage
+	) {
 
 	var Router = Backbone.Router.extend({
 
 		routes: {
-			'': 'home'
+			'': 'home',
+			'manchester': 'manchester'
 		}
 	});
 
@@ -27,8 +31,11 @@ define([
             router: router
         });
 
+		var manchesterPage = new ManchesterPage();
+
 		var pages = {
-			home: homePage
+			home: homePage,
+			manchester: manchesterPage
 		};
 
 		router.on('route', function(pageName) {

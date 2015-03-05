@@ -24,7 +24,9 @@ require.config({
 		'L' : [
 			"//cdn.leafletjs.com/leaflet-0.7.3/leaflet" 
 		],
-		
+		'd3': [
+			"//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min"
+		],
         'text': "./assets/text",
         'templates': "../templates"
 	},
