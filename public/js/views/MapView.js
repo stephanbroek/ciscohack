@@ -57,9 +57,14 @@ define([
             //result is now an array of jsons
             console.log(result);
 
+            //Convert start point to lat lon to centre map
+            var osStart = new OSRef(result[0].StartGrid.substring(0,6),result[0].StartGrid.substring(6,12));
+            var latlonStart = osStart.toLatLng();
+            console.log(latlonStart);
+
             //Create a map
 
-            var map = L.map(this.$('#map')[0]).setView([51.505, -0.09], 13);
+            var map = L.map(this.$('#map')[0]).setView([latlonStart.lat, latlonStart.lng], 11);
 
             // add an OpenStreetMap tile layer
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -69,8 +74,6 @@ define([
 
             //for each result in the array, add a start lat and start lon field then plot it on the map
             for (var i = 0; i < result.length; i++) {
-
-                console.log(i);
 
                 //Convert os grid reference to lat lon
                 var osGridStart = result[i].StartGrid;
