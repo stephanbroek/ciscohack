@@ -3,7 +3,9 @@ var url = require('url');
 var node_static = require('node-static');
 var faye = require('faye');
 
-var file_server = new node_static.Server('./public');
+var file_server = new node_static.Server('./public', {
+  'Access-Control-Allow-Origin': '*'
+});
 var stations = require('./stations');
 
 var socket_adapter = new faye.NodeAdapter({mount: '/stream', timeout: 60});
