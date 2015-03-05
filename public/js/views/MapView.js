@@ -6,53 +6,52 @@ define([
     'text!templates/MapTemplate.html',
     'libs/jscoord-1.1.1',
     'L'
-], function($, _, Backbone, MapTemplate,jscoord,L) {
+], function ($, _, Backbone, MapTemplate, jscoord, L) {
 
     var that;
     var MapView = Backbone.View.extend({
 
-        initialize: function(options) {
+        initialize: function (options) {
             that = this;
-
         },
-        render: function() {
+        render: function () {
 
             var template = _.template(MapTemplate);
-            
+
             this.$el.html(template);
             this.getData();
-
         },
-
-        getData : function() {
+        getData: function () {
 
             $.ajax({
                 type: "GET",
                 url: "data/linkDescriptions.csv",
                 dataType: "text",
-                success: function(data) {that.displayMap(data);}
+                success: function (data) {
+                    that.displayMap(data);
+                }
             });
 
         },
+        displayMap: function (csv) {
 
-        displayMap : function(csv) {
-             //convert csv to json
-            var lines=csv.split("\n");
-         
+            //convert csv to json
+            var lines = csv.split("\n");
+
             var result = [];
 
-            var headers=lines[0].split(",");
+            var headers = lines[0].split(",");
 
-            for(var i=1;i<lines.length;i++){
+            for (var i = 1; i < lines.length; i++) {
 
-              var obj = {};
-              var currentline=lines[i].split(",");
+                var obj = {};
+                var currentline = lines[i].split(",");
 
-              for(var j=0;j<headers.length;j++){
-                  obj[headers[j]] = currentline[j];
-              }
+                for (var j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = currentline[j];
+                }
 
-              result.push(obj);
+                result.push(obj);
 
             }
 
@@ -69,30 +68,27 @@ define([
             }).addTo(map);
 
 
-
             //for each result in the array, add a start lat and start lon field then plot it on the map
-            for (var i=0; i<result.length; i++) {
+            for (var i = 0; i < result.length; i++) {
 
                 //Convert os grid reference to lat lon
-                var osGridStart= result[i].StartGrid;
-                var osGridEnd= result[i].EndGrid;
-                var osReferenceStart = new OSRef(osGridStart.substring(0,6), osGridStart.substring(6,12));
-                var osReferenceEnd = new OSRef(osGridEnd.substring(0,6), osGridEnd.substring(6,12));
+                var osGridStart = result[i].StartGrid;
+                var osGridEnd = result[i].EndGrid;
+                var osReferenceStart = new OSRef(osGridStart.substring(0, 6), osGridStart.substring(6, 12));
+                var osReferenceEnd = new OSRef(osGridEnd.substring(0, 6), osGridEnd.substring(6, 12));
 
                 var latLonObjectStart = osReferenceStart.toLatLng();
                 var latLonObjectEnd = osReferenceEnd.toLatLng();
-                
 
-                L.marker([latLonObjectStart.lat,latLonObjectStart.lng]).addTo(map)
-                L.marker([latLonObjectEnd.lat,latLonObjectEnd.lng]).addTo(map)
+
+                L.marker([latLonObjectStart.lat, latLonObjectStart.lng]).addTo(map)
+                L.marker([latLonObjectEnd.lat, latLonObjectEnd.lng]).addTo(map)
             }
 
             //for each result in the array,
             //plot the points on a leaflet map
 
         }
-
-
     });
 
     return MapView;
