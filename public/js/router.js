@@ -5,12 +5,13 @@ define([
 	'backbone',
     'bootstrap',
 	'views/HomePage',
-], function($,
-            _,
-            Backbone,
-            bootstrap,
-            HomePage)
-{
+], function(
+	$,
+	_,
+	Backbone,
+	bootstrap,
+	HomePage) {
+
 	var Router = Backbone.Router.extend({
 
 		routes: {
