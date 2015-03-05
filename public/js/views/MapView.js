@@ -129,7 +129,7 @@ define([
                     //Append threshold
                     $("#"+station.name+"Threshold").html(station.threshold);
 
-                    L.circle([station.latitude, station.longitude],300,{className:station.name+" station"}).addTo(stationsLayer);
+                    L.circle([station.latitude, station.longitude],500,{className:station.name+" station"}).addTo(stationsLayer);
 
                 })
 
@@ -170,6 +170,18 @@ define([
                 $("#stockportPercent").html(String(stockportCapacity)+"%");
                 $("#boltonPercent").html(String(boltonCapacity)+"%");
 
+                
+                //Change colour of stations depending on capacity
+                $(".ManchesterPicadilly").attr("stroke",getColour(picadillyCapacity));
+                $(".ManchesterPicadilly").attr("fill",getColour(picadillyCapacity));
+                $(".ManchesterOxfordRoad").attr("stroke",getColour(oxfordRoadCapacity));
+                $(".ManchesterOxfordRoad").attr("fill",getColour(oxfordRoadCapacity));
+                $(".ManchesterVictoria").attr("stroke",getColour(victoriaCapacity));
+                $(".ManchesterVictoria").attr("fill",getColour(victoriaCapacity));
+                $(".Stockport").attr("stroke",getColour(stockportCapacity));
+                $(".Stockport").attr("fill",getColour(stockportCapacity));
+                $(".Bolton").attr("stroke",getColour(boltonCapacity));
+                $(".Bolton").attr("fill",getColour(boltonCapacity));
 
             });
         }
@@ -177,3 +189,15 @@ define([
 
     return MapView;
 });
+
+function getColour(percentage) {
+    if (percentage > 100) {
+        percentage = 100;
+    }
+
+    var red = (255*percentage)/100
+    var green = (255 * (100-percentage))/100
+    var blue = 0;
+
+    return "rgb("+Math.floor(red)+","+Math.floor(green)+","+blue+")";
+}
