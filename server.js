@@ -3,6 +3,7 @@ var url = require('url');
 var node_static = require('node-static');
 
 var file_server = new node_static.Server('./public');
+var stations = require('./stations');
 
 var server = http.createServer(function(request, response) {
   var path = url.parse(request.url).pathname;
@@ -14,8 +15,12 @@ var server = http.createServer(function(request, response) {
     response.end();
   } else if (path.slice(0, 4) == '/api') {
     // API
-    if (false) {
-
+    if (path == '/api/stations') {
+      response.writeHead(200, {
+        'Content-Type': 'application/json'
+      });
+      response.write(JSON.parse(stations.getList()));
+      response.end();
     } else {
       response.writeHead(404, {
         'Content-Type': 'application/json'

@@ -1,93 +1,42 @@
-var list = {
-  'Altrincham': 263110,
-  'Ardwick': 576,
-  'Ashburys': 45418,
-  'Ashton-under-Lyne': 451130,
-  'Atherton': 369564,
-  'Belle Vue': 11744,
-  'Blackrod': 388282,
-  'Bolton': 2771130,
-  'Bramhall': 234772,
-  'Bredbury': 157228,
-  'Brinnington': 62032,
-  'Broadbottom': 122060,
-  'Bromley Cross': 316052,
-  'Bryn': 112940,
-  'Bumage': 144980,
-  'Castleton': 122810,
-  'Chassen Road': 34466,
-  'Cheadle Hulme': 574666,
-  'Clifton': 250,
-  'Daisy Hill': 210262,
-  'Davenport': 208820,
-  'Deansgate': 242179,
-  'Denton': 56,
-  'East Didsbury': 266606,
-  'Eccles': 100938,
-  'Fairfield': 9010,
-  'Famworth': 33982,
-  'Flixton': 70524,
-  'Flowery Field': 163180,
-  'Gathurst': 71762,
-  'Gatley': 235336,
-  'Godley': 62720,
-  'Gorton': 97544,
-  'Greenfield': 237976,
-  'Guide Bridge': 208760,
-  'Hag Fold': ,
-  'Hale',
-  'Hall i\' th\' Wood',
-  'Hattersley',
-  'Hazel Grove',
-  'Heald Green',
-  'Heaton Chapel',
-  'Hindley',
-  'Horwich Parkway',
-  'Humphrey Park',
-  'Hyde Central',
-  'Hyde North',
-  'Ince',
-  'Irlam',
-  'Kearsley',
-  'Levenshulme',
-  'Littleborough',
-  'Lostock',
-  'Manchester Airport',
-  'Manchester Oxford Road',
-  'Manchester Piccadilly',
-  'Manchester United',
-  'Manchester Victoria',
-  'Marple',
-  'Mauldeth Road',
-  'Middlewood',
-  'Mills Hill',
-  'Moorside',
-  'Moses Gate',
-  'Mossley',
-  'Moston',
-  'Navigation Road',
-  'Newton for Hyde',
-  'Orrell',
-  'Patricroft',
-  'Pemberton',
-  'Reddish North',
-  'Reddish South',
-  'Rochdale',
-  'Romiley',
-  'Rose Hill Marple',
-  'Ryder Brow',
-  'Salford Central',
-  'Salford Crescent',
-  'Smithy Bridge',
-  'Stalybridge',
-  'Stockport',
-  'Swinton',
-  'Trafford Park',
-  'Urmston',
-  'Walkden',
-  'Westhoughton',
-  'Wigan North Western',
-  'Wigan Wallgate',
-  'Woodley',
-  'Woodsmoor'
+var list ={
+  'Manchester Picadilly': {
+    people: 22025850,
+    longitude: 0,
+    latitude: 0
+  },
+  'Manchester Victoria': {
+    people: 5839988,
+    longitude: 0,
+    latitude: 0
+  },
+  'Manchester Oxford Road': {
+    people: 5211830,
+    longitude: 0,
+    latitude: 0
+  },
+  'Stockport': {
+    people: 3088032,
+    longitude: 0,
+    latitude: 0
+  },
+  'Bolton': {
+    people: 2771130,
+    longitude: 0,
+    latitude: 0
+  }
+};
+
+module.exports = {
+  getLongitudeLatitude: function(name) {
+    return [list[name].longitude, list[name].latitude]
+  },
+  getPeople: function(name, time) {
+    return list[name].people / 1000;
+  },
+  getListNames: function() {
+    return Object.keys(list);
+  },
+  getList: function() {
+    return list;
+  }
 };
