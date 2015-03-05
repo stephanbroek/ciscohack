@@ -73,22 +73,31 @@ define([
             //for each result in the array, add a start lat and start lon field then plot it on the map
             for (var i=0; i<result.length; i++) {
 
+                console.log(i);
+
                 //Convert os grid reference to lat lon
                 var osGridStart= result[i].StartGrid;
                 var osGridEnd= result[i].EndGrid;
                 var osReferenceStart = new OSRef(osGridStart.substring(0,6), osGridStart.substring(6,12));
                 var osReferenceEnd = new OSRef(osGridEnd.substring(0,6), osGridEnd.substring(6,12));
 
+                //console.log(osReferenceStart);
+                //console.log(osReferenceEnd);
+
                 var latLonObjectStart = osReferenceStart.toLatLng();
                 var latLonObjectEnd = osReferenceEnd.toLatLng();
                 
+                //console.log(latLonObjectStart);
+                //console.log(latLonObjectEnd);
 
+                //display on map
                 L.marker([latLonObjectStart.lat,latLonObjectStart.lng]).addTo(map)
+                    .bindPopup("Start")
                 L.marker([latLonObjectEnd.lat,latLonObjectEnd.lng]).addTo(map)
+                    .bindPopup("End");
             }
 
-            //for each result in the array,
-            //plot the points on a leaflet map
+           
 
         }
 
