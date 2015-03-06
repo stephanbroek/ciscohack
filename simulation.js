@@ -24,7 +24,7 @@ var keys = [
   [24,.2]
 ];
 
-var k = [[0, 16, 32, 40, 48, 60, 72, 80, 96], [.2,.2, 1,.6,.8,.6, 1,.2, .2]];
+var k = [[0, 16, 32, 40, 48, 60, 72, 80, 96], [.2, .2, 1, .6, .8, .6, 1, .2, .2]];
 
 var time = 0;
 var proportion = 0;
@@ -36,14 +36,14 @@ function bias(val, bias) {
   return val;
 }
 
-function getLower(k, t) {
+function getLower(t) {
   for (var ki=0; ki<k[0].length; ki++) {
     if (k[0][ki] > t)
       return [k[0][ki-1], k[1][ki-1]];
   }
 }
 
-function getHigher(k, t) {
+function getHigher(t) {
   for (var ki=0; ki<k[0].length; ki++) {
     if (k[0][ki] > t)
       return [k[0][ki], k[1][ki]];
@@ -55,9 +55,10 @@ function getProportion(t) {
   if (io > -1)
     return k[1][io];
   else {
-    var lower = getLower(k, t), higher = getHigher(k, t);
-    var lowerProportion = (t - lower[0]) / (higher[0] - lower[0]), higherProportion = 1 - lowerProportion;
-    return lowerProportion * lower[1] + higherProportion * higher[1];
+    var lower = getLower(t), higher = getHigher(t);
+    var higherProportion = (t - lower[0]) / (higher[0] - lower[0]), lowerProportion = 1 - higherProportion;
+    var t_proportion = lowerProportion * lower[1] + higherProportion * higher[1];
+    return t_proportion;
   }
 }
 
@@ -78,7 +79,6 @@ function getStations() {
       people: getPeople(l)
     });
   }
-  console.log(result);
   return result;
 }
 
