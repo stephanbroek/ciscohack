@@ -117,9 +117,6 @@ define([
 
                 $.each(stations, function (key, station) {
 
-                    //Append threshold
-                    $("#" + station.name + "Threshold").html(station.threshold);
-
                     stationThresholds.push({
                         name: station.name,
                         threshold: station.threshold
@@ -128,8 +125,6 @@ define([
                     L.circle([station.latitude, station.longitude],500,{className:station.name+" station"}).addTo(stationsLayer);
 
                 });
-
-                console.log(stationThresholds);
 
                 var overlays = {
                     "Stations": stationsLayer
@@ -145,8 +140,6 @@ define([
                 carParkNames = carParks;
 
                 $.each(carParks, function(key, carPark) {
-
-                    $("#" + carPark.name + "Capacity").html(carPark.capacity);
 
                     carParkCapacities.push({
                         name: carPark.name,
@@ -168,25 +161,12 @@ define([
 
             var subscription = faye_client.subscribe('/data', function (message) {
 
-                //Update paragraphs
-                $("#picadillyPara").html(message.stations[0].people);
-                $("#victoriaPara").html(message.stations[1].people);
-                $("#oxfordRoadPara").html(message.stations[2].people);
-                $("#stockportPara").html(message.stations[3].people);
-                $("#boltonPara").html(message.stations[4].people);
-
                 //Calculate percentages
                 var picadillyCapacity = (message.stations[0].people / ($.grep(stationThresholds, function(e){ return e.name == "ManchesterPicadilly"; }))[0].threshold) * 100;
                 var victoriaCapacity = (message.stations[1].people / ($.grep(stationThresholds, function(e){ return e.name == "ManchesterVictoria"; }))[0].threshold) * 100;
                 var oxfordRoadCapacity = (message.stations[2].people / ($.grep(stationThresholds, function(e){ return e.name == "ManchesterOxfordRoad"; }))[0].threshold) * 100;
                 var stockportCapacity = (message.stations[3].people / ($.grep(stationThresholds, function(e){ return e.name == "Stockport"; }))[0].threshold) * 100;
                 var boltonCapacity = (message.stations[4].people / ($.grep(stationThresholds, function(e){ return e.name == "Bolton"; }))[0].threshold) * 100;
-
-                $("#picadillyPercent").html(String(picadillyCapacity)+"%");
-                $("#victoriaPercent").html(String(victoriaCapacity)+"%");
-                $("#oxfordRoadPercent").html(String(oxfordRoadCapacity)+"%");
-                $("#stockportPercent").html(String(stockportCapacity)+"%");
-                $("#boltonPercent").html(String(boltonCapacity)+"%");
 
                 //Change colour of stations depending on capacity
                 $(".ManchesterPicadilly").attr("stroke",getColour(picadillyCapacity));
@@ -223,8 +203,6 @@ define([
                 $.each(carParkNames, function(key, carPark) {
 
                     var spaces = message.carParks[key].spaces;
-
-                    $("#"+carPark.name+"Para").html(spaces);
 
                     var capacity = ($.grep(carParkCapacities, function(e){ return e.name == carPark.name; }))[0].capacity;
 
