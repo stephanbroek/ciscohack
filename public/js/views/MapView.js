@@ -174,6 +174,26 @@ define([
                 $(".Bolton").attr("stroke",getColour(boltonCapacity));
                 $(".Bolton").attr("fill",getColour(boltonCapacity));
 
+                //Update busiest stations
+                $("#busiestStations").empty();
+
+                //Sort capacities in order of decreasing value
+                //Then append spans for each one
+                var capacitiesArray=[], capacities = {"Picadilly":picadillyCapacity, "Victoria":victoriaCapacity, "OxfordRoad":oxfordRoadCapacity,
+                                    "Stockport":stockportCapacity, "Bolton":boltonCapacity};
+                for(capacity in capacities){
+                 capacitiesArray.push([capacity,capacities[capacity]])
+                }
+                capacitiesArray.sort(function(a,b){return a[1] - b[1]});
+                capacitiesArray.reverse();
+
+                for (var i=0; i<capacitiesArray.length; i++) {
+                    //append a span
+                    $("#busiestStations").append("<span>"+capacitiesArray[i][0]+": "+capacitiesArray[i][1]+"%</span><br>");
+
+                }
+
+
             });
         }
     });
