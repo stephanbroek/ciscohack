@@ -98,7 +98,7 @@ function getRoadUsage(callback) {
   var zero = ('0' + (time*15)%60).slice(-2);
   var timestamp = '2015/02/23 ' + Math.floor((time*15)/60) + ':' + zero;
   var result;
-  var query = mysql_con.query("SELECT l.start_grid, l.end_grid, f.journeys, f.count FROM link as l LEFT JOIN (select * from full where time='" + timestamp + "') as f ON l.cosit=f.cosit;", function(err,rows){
+  var query = mysql_con.query("SELECT l.cosit l.start_grid, l.end_grid, f.journeys, f.count FROM link as l LEFT JOIN (select * from full where time='" + timestamp + "') as f ON l.cosit=f.cosit;", function(err,rows){
     result = rows;
     callback({
       stations: getStations(),
