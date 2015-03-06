@@ -6,3 +6,7 @@
 .margin-small {
 	margin: 0 20px;
 }
+
+.navbar-default {
+	margin-bottom: 0px;
+}
