@@ -87,15 +87,9 @@ define([
                 var osReferenceStart = new OSRef(osGridStart.substring(0, 6), osGridStart.substring(6, 12));
                 var osReferenceEnd = new OSRef(osGridEnd.substring(0, 6), osGridEnd.substring(6, 12));
 
-                //console.log(osReferenceStart);
-                //console.log(osReferenceEnd);
-
                 var latLonObjectStart = osReferenceStart.toLatLng();
                 var latLonObjectEnd = osReferenceEnd.toLatLng();
                 
-                //console.log(latLonObjectStart);
-                //console.log(latLonObjectEnd);
-
                 //display on map
                 L.circle([latLonObjectStart.lat, latLonObjectStart.lng], 5).addTo(map);
                 L.circle([latLonObjectEnd.lat, latLonObjectEnd.lng], 5).addTo(map);
@@ -147,8 +141,7 @@ define([
         getData: function(faye_client) {
 
             var subscription = faye_client.subscribe('/data',function(message) {
-                console.log(message);
-
+                
                 //Update paragraphs
                 $("#picadillyPara").html(message.stations[0].people);
                 $("#victoriaPara").html(message.stations[1].people);
@@ -163,13 +156,11 @@ define([
                 var stockportCapacity = (message.stations[3].people / parseInt($("#StockportThreshold").html())) * 100;
                 var boltonCapacity = (message.stations[4].people / parseInt($("#BoltonThreshold").html())) * 100;
 
-
                 $("#picadillyPercent").html(String(picadillyCapacity)+"%");
                 $("#victoriaPercent").html(String(victoriaCapacity)+"%");
                 $("#oxfordRoadPercent").html(String(oxfordRoadCapacity)+"%");
                 $("#stockportPercent").html(String(stockportCapacity)+"%");
                 $("#boltonPercent").html(String(boltonCapacity)+"%");
-
                 
                 //Change colour of stations depending on capacity
                 $(".ManchesterPicadilly").attr("stroke",getColour(picadillyCapacity));
@@ -184,7 +175,6 @@ define([
                 $(".Bolton").attr("fill",getColour(boltonCapacity));
 
 
-
             });
         }
     });
@@ -192,6 +182,7 @@ define([
     return MapView;
 });
 
+//Helper function to return an rgb colour value between red and green based on percentage
 function getColour(percentage) {
     if (percentage > 100) {
         percentage = 100;
