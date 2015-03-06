@@ -206,10 +206,10 @@ define([
 
                     var capacity = ($.grep(carParkCapacities, function(e){ return e.name == carPark.name; }))[0].capacity;
 
-                    var percentFull = (spaces / capacity) * 100;
+                    var percentFull = 1/((spaces / capacity) * 100);
 
-                    $("."+carPark.name).attr("stroke",getCarParkColour(percentFull));
-                    $("."+carPark.name).attr("fill",getCarParkColour(percentFull));
+                    $("."+carPark.name).attr("stroke",getColour(percentFull));
+                    $("."+carPark.name).attr("fill",getColour(percentFull));
                 });
             });
         }
@@ -231,11 +231,3 @@ function getColour(percentage) {
     return "rgb("+Math.floor(red)+","+Math.floor(green)+","+blue+")";
 }
 
-function getCarParkColour(percentFull) {
-
-    if(percentFull>79) {
-        return "red"
-    } else {
-        return "blue"
-    }
-}
