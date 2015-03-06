@@ -26,9 +26,6 @@ var keys = [
 
 var k = [[0, 16, 32, 40, 48, 60, 72, 80, 96], [.2,.2, 1,.6,.8,.6, 1,.2, 2]];
 
-var k_stations = [];
-for (var s )
-
 var time = 0;
 var proportion = 0;
 
@@ -88,25 +85,26 @@ function getCarParks() {
   return result;
 }
 
-function getRoadUsage(t) {
-  var zero = ('0' + (t*15)%60).slice(-2);
-  var timestamp = '2015/02/23 ' + Math.floor((t*15)/60) + ':' + zero;
+function getRoadUsage(callback) {
+  var zero = ('0' + (time*15)%60).slice(-2);
+  var timestamp = '2015/02/23 ' + Math.floor((time*15)/60) + ':' + zero;
   var result;
-  var query = mysql_con.query("SELECT l.start_grid, l.end_grid, f.journeys, f.count FROM link as l LEFT JOIN (select * from full where time='" + timestamp + "') as f ON l.cosit=f.cosit;", function(err,rows,fields){
+  var query = mysql_con.query("SELECT l.start_grid, l.end_grid, f.journeys, f.count FROM link as l LEFT JOIN (select * from full where time='" + timestamp + "') as f ON l.cosit=f.cosit;", function(err,rows){
     result = rows;
+    callback({
+      stations: getStations(),
+      carParks: getCarParks(),
+      roadUsage: rows
+    });
   });
   return result;
 }
 
 module.exports = {
-  getData: function() {
+  getData: function(callback) {
     proportion = getProportion(time);
     time = (time + 1) % 96;
-    return {
-      stations: getStations(),
-      carParks: getCarParks(),
-      roadUsage: getRoadUsage(time)
-    }
+    getRoadUsage(callback);
   },
   getStationInfo: function() {
     var result = [];
