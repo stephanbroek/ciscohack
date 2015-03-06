@@ -9,11 +9,12 @@ define([
     'L'
 ], function ($, _, Backbone, MapTemplate, jscoord, csv, L) {
 
+    var carParkNames;
+    var carParkCapacities = [];
+    var stationThresholds = [];
+
     var MapView = Backbone.View.extend({
 
-        initialize: function (options) {
-
-        },
         render: function () {
 
             var client = new Faye.Client('http://localhost:3000/faye');
@@ -35,7 +36,6 @@ define([
                     this.displayMap(data);
                 }, this)
             });
-
         },
         displayMap: function (csv) {
 
@@ -63,9 +63,9 @@ define([
             //console.log(result);
 
             //Convert start point to lat lon to centre map
-            var osStart = new OSRef(result[0].StartGrid.substring(0,6),result[0].StartGrid.substring(6,12));
+            var osStart = new OSRef(result[0].StartGrid.substring(0, 6), result[0].StartGrid.substring(6, 12));
             var latlonStart = osStart.toLatLng();
-            
+
             //Create a map
 
             var map = L.map(this.$('#map')[0]).setView([latlonStart.lat, latlonStart.lng], 10);
@@ -77,9 +77,9 @@ define([
 
 
             //for each result in the array, add a start lat and start lon field then plot it on the map
-            
-            for (var i = 0; i < result.length -1; i++) {
-                
+
+            for (var i = 0; i < result.length - 1; i++) {
+
 
                 //Convert os grid reference to lat lon
                 var osGridStart = result[i].StartGrid;
@@ -89,22 +89,18 @@ define([
 
                 var latLonObjectStart = osReferenceStart.toLatLng();
                 var latLonObjectEnd = osReferenceEnd.toLatLng();
-                
+
                 //display on map
                 L.circle([latLonObjectStart.lat, latLonObjectStart.lng], 5).addTo(map);
                 L.circle([latLonObjectEnd.lat, latLonObjectEnd.lng], 5).addTo(map);
-                
 
             }
-
-           
-
         },
 
-        displayStationsMap: function() {
+        displayStationsMap: function () {
 
             //Leaflet map
-            var map = L.map(this.$('#stationsMap')[0]).setView([53.4722454,-2.2235922], 11);
+            var map = L.map(this.$('#stationsMap')[0]).setView([53.4722454, -2.2235922], 11);
 
             // add an OpenStreetMap tile layer
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -112,36 +108,66 @@ define([
             }).addTo(map);
 
             var stationsLayer = new L.LayerGroup();
+            var carParksLayer = new L.LayerGroup();
 
-            $.get('/api/stationInfo',function(stationsString) {
+            $.get('/api/stationInfo', function (stationsString) {
 
                 var stations = JSON.parse(stationsString);
-                console.log(stations);
+                //console.log(stations);
 
-                $.each(stations,function(key,station) {
-                    console.log(station.name);
+                $.each(stations, function (key, station) {
+
                     //Append threshold
-                    $("#"+station.name+"Threshold").html(station.threshold);
+                    $("#" + station.name + "Threshold").html(station.threshold);
+
+                    stationThresholds.push({
+                        name: station.name,
+                        threshold: station.threshold
+                    });
 
                     L.circle([station.latitude, station.longitude],500,{className:station.name+" station"}).addTo(stationsLayer);
 
-                })
+                });
+
+                console.log(stationThresholds);
 
                 var overlays = {
                     "Stations": stationsLayer
                 };
 
                 L.control.layers(overlays).addTo(map);
-
-
             });
-            
+
+            $.get('api/carParkInfo', function(carParksString) {
+
+                var carParks = JSON.parse(carParksString);
+
+                carParkNames = carParks;
+
+                $.each(carParks, function(key, carPark) {
+
+                    $("#" + carPark.name + "Capacity").html(carPark.capacity);
+
+                    carParkCapacities.push({
+                        name: carPark.name,
+                        capacity: carPark.capacity
+                    });
+
+                    L.circle([carPark.latitude, carPark.longitude], 150, {className: carPark.name}).addTo(carParksLayer);
+                })
+
+                var overlays = {
+                    "Car Parks": carParksLayer
+                };
+
+                L.control.layers(overlays).addTo(map);
+            });
         },
 
-        getData: function(faye_client) {
+        getData: function (faye_client) {
 
-            var subscription = faye_client.subscribe('/data',function(message) {
-                
+            var subscription = faye_client.subscribe('/data', function (message) {
+
                 //Update paragraphs
                 $("#picadillyPara").html(message.stations[0].people);
                 $("#victoriaPara").html(message.stations[1].people);
@@ -150,18 +176,18 @@ define([
                 $("#boltonPara").html(message.stations[4].people);
 
                 //Calculate percentages
-                var picadillyCapacity = (message.stations[0].people / parseInt($("#ManchesterPicadillyThreshold").html())) * 100;
-                var victoriaCapacity = (message.stations[1].people / parseInt($("#ManchesterVictoriaThreshold").html())) * 100;
-                var oxfordRoadCapacity = (message.stations[2].people / parseInt($("#ManchesterOxfordRoadThreshold").html())) * 100;
-                var stockportCapacity = (message.stations[3].people / parseInt($("#StockportThreshold").html())) * 100;
-                var boltonCapacity = (message.stations[4].people / parseInt($("#BoltonThreshold").html())) * 100;
+                var picadillyCapacity = (message.stations[0].people / ($.grep(stationThresholds, function(e){ return e.name == "ManchesterPicadilly"; }))[0].threshold) * 100;
+                var victoriaCapacity = (message.stations[1].people / ($.grep(stationThresholds, function(e){ return e.name == "ManchesterVictoria"; }))[0].threshold) * 100;
+                var oxfordRoadCapacity = (message.stations[2].people / ($.grep(stationThresholds, function(e){ return e.name == "ManchesterOxfordRoad"; }))[0].threshold) * 100;
+                var stockportCapacity = (message.stations[3].people / ($.grep(stationThresholds, function(e){ return e.name == "Stockport"; }))[0].threshold) * 100;
+                var boltonCapacity = (message.stations[4].people / ($.grep(stationThresholds, function(e){ return e.name == "Bolton"; }))[0].threshold) * 100;
 
                 $("#picadillyPercent").html(String(picadillyCapacity)+"%");
                 $("#victoriaPercent").html(String(victoriaCapacity)+"%");
                 $("#oxfordRoadPercent").html(String(oxfordRoadCapacity)+"%");
                 $("#stockportPercent").html(String(stockportCapacity)+"%");
                 $("#boltonPercent").html(String(boltonCapacity)+"%");
-                
+
                 //Change colour of stations depending on capacity
                 $(".ManchesterPicadilly").attr("stroke",getColour(picadillyCapacity));
                 $(".ManchesterPicadilly").attr("fill",getColour(picadillyCapacity));
@@ -193,7 +219,20 @@ define([
 
                 }
 
+                // Update the car park circles
+                $.each(carParkNames, function(key, carPark) {
 
+                    var spaces = message.carParks[key].spaces;
+
+                    $("#"+carPark.name+"Para").html(spaces);
+
+                    var capacity = ($.grep(carParkCapacities, function(e){ return e.name == carPark.name; }))[0].capacity;
+
+                    var percentFull = (spaces / capacity) * 100;
+
+                    $("."+carPark.name).attr("stroke",getCarParkColour(percentFull));
+                    $("."+carPark.name).attr("fill",getCarParkColour(percentFull));
+                });
             });
         }
     });
@@ -212,4 +251,13 @@ function getColour(percentage) {
     var blue = 0;
 
     return "rgb("+Math.floor(red)+","+Math.floor(green)+","+blue+")";
+}
+
+function getCarParkColour(percentFull) {
+
+    if(percentFull>79) {
+        return "red"
+    } else {
+        return "blue"
+    }
 }
