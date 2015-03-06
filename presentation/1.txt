@@ -1,0 +1,81 @@
+|	Transport
+|	For
+|	Greater
+|	Manchester
+|	-----------------------	
+|	University of Sheffield
+|
+|
+\/
+
+
+
+Problem:
+
+Proactively manage the passenger flow at Transport Service Facilities.
+
+
+
+
+
+	- Train Stations
+
+	Over 60,000 people pass through
+	Manchester Picadilly      every day.
+
+	(Office of Rail Regulation 2013-14 report)
+
+
+
+
+
+
+How can a TFGM controller manage over 60,000 people?
+
+
+
+
+
+
+
+Using data.
+
+
+
+
+
+
+
+
+
+Data Collection
+	- Smartphone detection
+	- Car park data
+	- Traffic congestion data
+
+
+
+Why is this useful?
+
+To help us predict where congestion may occur before it occurs.
+
+
+
+
+
+
+
+
+What does the TFGM operator get?
+
+
+
+
+
+
+A nice dashboard.
+
+-- Demo --
+
+
+Other Applications

@@ -10,3 +10,11 @@
 .navbar-default {
 	margin-bottom: 0px;
 }
+
+img.tfgm {
+	width: 3em;
+	float: left;
+	position: relative;
+	top: 0.7em;
+	margin-right: 1em;
+}
