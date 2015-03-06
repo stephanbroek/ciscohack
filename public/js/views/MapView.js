@@ -142,8 +142,8 @@ define([
 
           var percentFull = ((1 - (spaces / capacity)) * 100);
 
-          $("."+carPark.name).attr("stroke",getColour([147, 112, 219], [0, 140, 255], percentFull));
-          $("."+carPark.name).attr("fill",getColour([147, 112, 219], [0, 140, 255], percentFull));
+          $("."+carPark.name).attr("stroke",getColour([219, 112, 219], [0, 140, 255], percentFull));
+          $("."+carPark.name).attr("fill",getColour([219, 112, 219], [0, 140, 255], percentFull));
         });
       });
     }
