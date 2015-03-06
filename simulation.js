@@ -24,13 +24,13 @@ var keys = [
   [24,.2]
 ];
 
-var k = [[0, 16, 32, 40, 48, 60, 72, 80, 96], [.2,.2, 1,.6,.8,.6, 1,.2, 2]];
+var k = [[0, 16, 32, 40, 48, 60, 72, 80, 96], [.2,.2, 1,.6,.8,.6, 1,.2, .2]];
 
 var time = 0;
 var proportion = 0;
 
-function bias(val) {
-  val = (Math.random() * 0.2) - 0.1;
+function bias(val, bias) {
+  val = val + (Math.random() * (2 * bias)) - bias;
   if (val > 1) val = 1;
   else if (val < 0.1) val = 0.1;
   return val;
@@ -62,7 +62,7 @@ function getProportion(t) {
 }
 
 function getPeople(name) {
-  return Math.floor((stationList[name].people) * bias(proportion));
+  return Math.floor((stationList[name].max_people) * bias(proportion, 0.05));
 
 }
 
@@ -78,6 +78,7 @@ function getStations() {
       people: getPeople(l)
     });
   }
+  console.log(result);
   return result;
 }
 
