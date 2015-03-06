@@ -103,7 +103,8 @@ function getRoadUsage(callback) {
     callback({
       stations: getStations(),
       carParks: getCarParks(),
-      roadUsage: rows
+      roadUsage: rows,
+      t: time
     });
   });
   return result;
