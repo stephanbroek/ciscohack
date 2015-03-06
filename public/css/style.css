@@ -18,3 +18,14 @@ img.tfgm {
 	top: 0.7em;
 	margin-right: 1em;
 }
+
+.icon {
+	font-size: 4em;
+	z-index: 200;
+	position: absolute;
+	margin-top: 5px;
+	text-align: center;
+	width: 100%;
+	color: white;
+	display: inline;
+}

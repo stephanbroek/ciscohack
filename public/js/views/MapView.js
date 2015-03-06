@@ -14,6 +14,8 @@ define([
   var carParkCapacities = [];
   var stationThresholds = [];
 
+    var rotation = 0;
+
   var map;
 
   var MapView = Backbone.View.extend({
@@ -147,6 +149,11 @@ define([
           $("."+carPark.name).attr("stroke",getColour([219, 112, 219], [0, 140, 255], percentFull));
           $("."+carPark.name).attr("fill",getColour([219, 112, 219], [0, 140, 255], percentFull));
         });
+
+          var time = (message.t / 95) * 365;
+
+        $(".icon").css({transform: 'rotateZ('+time+'deg)'});
+
       });
     }
   });
