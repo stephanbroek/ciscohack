@@ -174,7 +174,6 @@ define([
                 $(".Bolton").attr("stroke",getColour(boltonCapacity));
                 $(".Bolton").attr("fill",getColour(boltonCapacity));
 
-
             });
         }
     });
