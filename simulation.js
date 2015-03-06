@@ -64,12 +64,12 @@ function getProportion(ti, delay) {
 }
 
 function getPeople(name) {
-  return Math.floor((stationList[name].max_people) * bias(getProportion(time, stationList[name].delay), 0.05));
+  return Math.floor((stationList[name].max_people) * bias(getProportion(time, stationList[name].delay), 0.1));
 
 }
 
 function getSpaces(name) {
-  return carparkList[name].capacity - Math.floor(carparkList[name].capacity * getProportion(time, 0));
+  return carparkList[name].capacity - Math.floor(carparkList[name].capacity * bias(getProportion(time, 0), 0.1));
 }
 
 function getStations() {
@@ -98,7 +98,7 @@ function getRoadUsage(callback) {
   var zero = ('0' + (time*15)%60).slice(-2);
   var timestamp = '2015/02/23 ' + Math.floor((time*15)/60) + ':' + zero;
   var result;
-  var query = mysql_con.query("SELECT l.cosit l.start_grid, l.end_grid, f.journeys, f.count FROM link as l LEFT JOIN (select * from full where time='" + timestamp + "') as f ON l.cosit=f.cosit;", function(err,rows){
+  var query = mysql_con.query("SELECT l.cosit, l.start_grid, l.end_grid, f.journeys, f.count FROM link as l LEFT JOIN (select * from full where time='" + timestamp + "') as f ON l.cosit=f.cosit;", function(err,rows){
     result = rows;
     callback({
       stations: getStations(),
